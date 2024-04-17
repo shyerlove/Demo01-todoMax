@@ -35,7 +35,7 @@ const search = (e: Event) => {
 .search {
     position: absolute;
     top: 100px;
-    left: 45px;
+    left: 5vw;
     width: 90%;
     height: 40px;
     background-color: #3f4a41;

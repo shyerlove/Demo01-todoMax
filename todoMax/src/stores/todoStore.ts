@@ -2,46 +2,50 @@ import { defineStore } from 'pinia'
 import { reactive } from 'vue'
 import type Todo from '@/type/todo'
 
-export const useTodoStore = defineStore('todoStore', () => {
 
-    const todos: Todo[] = reactive([
-        {
-            id: 1,
-            title: '看电视',
-            isComplete: false
-        },
-        {
-            id: 2,
-            title: '玩游戏',
-            isComplete: false
-        },
-        {
-            id: 3,
-            title: '吃饭',
-            isComplete: false
-        },
-    ])
+export const useTodoStore = defineStore('todoStore', () => {
+    const todos: Todo[] | [] = localStorage.getItem('TODOS') ? reactive(JSON.parse(localStorage.getItem('TODOS') as string)) : reactive([]);
 
     /* 新增一条todo */
     function addTodo(todoObj: Todo) {
-        todos.push(todoObj);
+        (todos as Todo[]).push(todoObj);
+        localStorage.setItem('TODOS', JSON.stringify(todos))
     }
 
     /* 删除一条todo */
     function delTodo(id: number) {
-        todos.splice(id - 1);
+        let index = todos.findIndex(item => item.id === id);
+        todos.splice(index, 1);
+        updataTodo();
     }
     /* 修改todo */
     function changeTodo(todoObj: Todo) {
-        todos.splice(todoObj.id - 1, 1, todoObj)
+        todos.forEach(item => {
+            if (item.id === todoObj.id) {
+                item.title = todoObj.title;
+            }
+        })
+        localStorage.setItem('TODOS', JSON.stringify(todos))
     }
 
     /* 完成/未完成 代办 */
     function completeTodo(id: number, isComplete: boolean) {
-        todos[id - 1].isComplete = isComplete;
-        console.log(todos[id - 1].isComplete);
-
+        todos[id].isComplete = isComplete;
+        localStorage.setItem('TODOS', JSON.stringify(todos))
     }
 
-    return { todos, addTodo, delTodo, changeTodo, completeTodo };
+    /* 根据id获取对应的数据 */
+    function getTodo(id: number) {
+        return todos.find(item => item.id === id);
+    }
+
+    /* id 始终与索引保持一致 */
+    function updataTodo() {
+        todos.forEach((item, index) => {
+            item.id = index;
+        })
+        localStorage.setItem('TODOS', JSON.stringify(todos));
+    }
+
+    return { todos, addTodo, delTodo, changeTodo, completeTodo, getTodo };
 })

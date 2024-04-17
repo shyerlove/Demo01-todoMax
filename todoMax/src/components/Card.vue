@@ -23,5 +23,19 @@ let props = defineProps(['h1', 'title'])
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    transition: all 0.2s;
+}
+
+.card:hover {
+    cursor: pointer;
+    height: 80px;
+}
+
+.card span {
+    display: block;
+    width: 20%;
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
+    overflow: hidden;
 }
 </style>

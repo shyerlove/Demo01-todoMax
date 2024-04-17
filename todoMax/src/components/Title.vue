@@ -5,7 +5,8 @@
             <i class="iconfont icon-sanjiaoxing" @click="showList" ref="list"></i>
         </div>
         <span class="bottom">
-            {{ tit2 }}
+            <slot name="todo"></slot>
+            <slot name="note"></slot>
         </span>
     </div>
 </template>
@@ -17,8 +18,9 @@ import { useWinStore } from '@/stores/windowState'
 
 const list = ref();
 let sendList: any = inject('sendList');
-sendList(list)
-const props = defineProps(['tit', 'tit2'])
+sendList(list);
+const props = defineProps(['tit']);
+
 
 
 const windowState = useWinStore()

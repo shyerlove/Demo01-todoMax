@@ -2,13 +2,21 @@
     <div class="note">
         <Add @click="addNote"></Add>
         <Sort></Sort>
-        <Title :tit="tit" :tit2="tit2"></Title>
+        <Title :tit="tit">
+            <template #note>
+                {{ obj.noteArr.length }}条笔记 | 我的笔记
+            </template>
+        </Title>
         <Search :updata="updata"></Search>
         <div class="hidden">
             <div class="list">
-                <Card v-for="(item) in obj.noteArr" :key="item.id" :h1="item.h1" :title="item.title" />
+                <Card v-if="obj.noteArr" v-for="(item) in obj.noteArr" :key="item.id" :h1="item.h1" :title="item.title"
+                    @click="editWin(item.id)" />
             </div>
         </div>
+        <h1 class="noNotes" v-if="obj.noteArr[0] == null">暂无笔记...</h1>
+        <NoteWin v-show="noteWinIsopen" :sendMsg="getMsg" :esc="esc"></NoteWin>
+        <Edit v-if="editIsopen" :id="Id" :offEditWin="offEditWin"></Edit>
     </div>
 </template>
 
@@ -19,33 +27,59 @@ import Title from '@/components/Title.vue'
 import Card from '@/components/Card.vue'
 import Add from '@/components/AddButton.vue'
 import Sort from '@/components/Sort.vue'
+import NoteWin from '@/components/NoteWin.vue'
+import Edit from '@/components/Edit.vue'
 import { ref, reactive } from 'vue'
 import { useNoteStore } from '@/stores/notesStore'
-import type Note from '@/type/note'
 
+
+
+let noteWinIsopen = ref(false);
+let editIsopen = ref(false);
+let Id = ref(0);
 const notesStore = useNoteStore();
 
+
+//临时存储所有笔记
 let obj = reactive({
     noteArr: notesStore.notes
-}); //临时存储所有笔记
-let len = obj.noteArr.length;
+});
+/* 定义笔记的数量及其他信息 */
 let tit = '全部笔记'
-let tit2 = `${len}条笔记 | 我的笔记`
+
 /* 新增一条note */
 function addNote() {
+    noteWinIsopen.value = true; // 弹出编辑框
+}
+const getMsg = (h1: string, title: string) => {
+
     notesStore.addNote({
-        id: notesStore.notes.length + 1,
-        h1: `第${notesStore.notes.length + 1}条笔记`,
-        title: '今天天气不错'
+        id: obj.noteArr.length,
+        h1,
+        title
     })
+    noteWinIsopen.value = false; // 关闭编辑框
+}
+
+/* 取消编辑 */
+const esc = () => {
+    noteWinIsopen.value = false;
+}
+
+/* 点击卡片进入编辑画面 */
+const editWin = (id: number) => {
+    Id.value = id;
+    editIsopen.value = true;
+}
+/* 关闭编辑框 */
+const offEditWin = () => {
+    editIsopen.value = false;
 }
 
 
+/* 动态更新数据 实现动态搜索功能 */
 function updata(arr: any) {
-    // console.log(arr);
     obj.noteArr = arr;
-    len = obj.noteArr.length
-    tit2 = `${len}条笔记 | 我的笔记`
 }
 
 
@@ -72,5 +106,13 @@ function updata(arr: any) {
     width: 100vw;
     height: 300px;
     overflow: scroll;
+}
+
+.noNotes {
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    position: absolute;
+    top: calc(50vh - 25px);
 }
 </style>

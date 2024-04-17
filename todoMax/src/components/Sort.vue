@@ -32,7 +32,7 @@ windowState.$subscribe((mutate, state) => {
     position: fixed;
     left: 100px;
     top: 100px;
-    width: 80%;
+    width: 60%;
     height: 0px;
     background-color: #202224;
     border-radius: 10px;

@@ -48,6 +48,7 @@ const offwin = (event: Event) => {
         windowState.more_isopen = false;
     }
 }
+
 </script>
 
 <style scoped>
