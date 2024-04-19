@@ -1,13 +1,15 @@
 <template>
-    <div class="todoCard" ref="todocrard">
+    <div :class="windowState.grid_isopen ? 'todoCard-grid' : 'todoCard'" ref="todocrard">
         <input type="checkbox" name="todoCheckBox" @change="complete(id, $event)" :checked="isComplete">
-        <span class="title">{{ title }}</span>
+        <span :class="windowState.grid_isopen ? 'title-grid' : 'title'">{{ title }}</span>
     </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useTodoStore } from '@/stores/todoStore'
+import { useWinStore } from '@/stores/windowState'
+const windowState = useWinStore();
 
 onMounted(() => {
     /* 防止页面刷新导致css样式丢失 */
@@ -32,7 +34,8 @@ const complete = (id: number, e: Event) => {
 </script>
 
 <style scoped>
-.todoCard {
+.todoCard,
+.todoCard-grid {
     width: 90%;
     height: 50px;
     border-radius: 10px;
@@ -45,12 +48,21 @@ const complete = (id: number, e: Event) => {
     transition: all 0.2s;
 }
 
+.todoCard-grid {
+    height: 100px;
+}
+
+.todoCard-grid:hover {
+    cursor: pointer;
+    height: 110px;
+}
+
 .todoCard:hover {
     cursor: pointer;
     height: 60px;
 }
 
-.todoCard input[type="checkbox"] {
+input[type="checkbox"] {
     display: inline-block;
     outline: none;
     appearance: none;
@@ -59,9 +71,10 @@ const complete = (id: number, e: Event) => {
     border-radius: 50%;
     border: 1px solid whitesmoke;
     transition: all 0.1s;
+    margin-left: 10px;
 }
 
-.todoCard input[type="checkbox"]::after {
+input[type="checkbox"]::after {
     content: '';
     display: none;
     width: 14px;
@@ -71,21 +84,33 @@ const complete = (id: number, e: Event) => {
     background-color: #4f90ff;
 }
 
-.todoCard input[type="checkbox"]:checked::after {
+input[type="checkbox"]:checked::after {
     display: block;
 }
 
-.todoCard input[type="checkbox"]:checked {
+input[type="checkbox"]:checked {
     border-color: #4f90ff;
     background-color: #4f90ff;
 }
 
-.todoCard .title {
+.title,
+.title-grid {
     display: inline-block;
-    width: fit-content;
+    width: 100px;
     height: 20px;
-    font-size: 22px;
-    margin-left: 10px;
+    font-size: 18px;
+    margin-left: 15px;
     line-height: 15px;
+    text-wrap: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.title-grid {
+    width: 200px;
+    height: 40px;
+    font-size: 30px;
+    margin-left: 25px;
+    line-height: 35px;
 }
 </style>

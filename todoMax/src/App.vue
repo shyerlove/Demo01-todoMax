@@ -42,10 +42,13 @@ provide('sendMore', getMore);
 /* 点击其他对方收起下拉菜单 */
 const offwin = (event: Event) => {
     if (event.target !== list.value.value) {
-        windowState.sort_isopen = false;
+        // windowState.sort_isopen = false;
+        if(windowState.sort_isopen){
+            windowState.change_Sort_isopen();
+        }
     }
     if (event.target !== more.value.value) {
-        windowState.more_isopen = false;
+            windowState.more_isopen = false;
     }
 }
 

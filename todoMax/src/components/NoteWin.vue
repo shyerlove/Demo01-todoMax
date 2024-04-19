@@ -14,12 +14,11 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { reactive, ref, onMounted } from 'vue'
 let props = defineProps(['h1', 'title', 'sendMsg', 'esc'])
 
 const h1Ref = ref();
 const titleRef = ref();
-
 
 
 const save = () => {

@@ -2,7 +2,7 @@
     <div class="title">
         <div class="top">
             <h1>{{ tit }}</h1>
-            <i class="iconfont icon-sanjiaoxing" @click="showList" ref="list"></i>
+            <i :class= "windowState.sort_isopen? 'iconfont icon-sanjiaoxing unlist':'iconfont icon-sanjiaoxing showlist'" @click="windowState.change_Sort_isopen" ref="list"></i>
         </div>
         <span class="bottom">
             <slot name="todo"></slot>
@@ -13,25 +13,14 @@
 
 <script setup lang="ts">
 import type { VueElement } from 'vue';
-import { ref, inject } from 'vue'
+import { ref, inject ,watch} from 'vue'
 import { useWinStore } from '@/stores/windowState'
 
 const list = ref();
 let sendList: any = inject('sendList');
 sendList(list);
 const props = defineProps(['tit']);
-
-
-
 const windowState = useWinStore()
-/* 点击展开分类列表 */
-const showList = function (event: Event) {
-    windowState.change_Sort_isopen()
-    windowState.sort_isopen
-        ? (<VueElement>event.target).style.transform = 'rotate(180deg)'
-        : (<VueElement>event.target).style.transform = 'rotate(0deg)'
-
-}
 </script>
 
 <style scoped>
@@ -68,5 +57,11 @@ const showList = function (event: Event) {
     display: block;
     width: 100%;
     height: 40%;
+}
+.unlist{
+    transform:rotate(180deg);
+}
+.showlist{
+    transform:rotate(0deg);
 }
 </style>

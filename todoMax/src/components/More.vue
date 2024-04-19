@@ -1,7 +1,7 @@
 <template>
     <ul class="more" ref="more">
-        <li>宫格视图</li>
-        <li>批量删除</li>
+        <li @click="showGrid">{{ listOrGiid }}</li>
+        <li @click="windowState.change_Dels_isopen">批量删除</li>
         <li>设置</li>
     </ul>
 </template>
@@ -23,6 +23,12 @@ windowState.$subscribe((mutate, state) => {
     }
 
 })
+/* 点击切换视图 */
+let listOrGiid = ref('列表视图');
+const showGrid = () => {
+    windowState.change_Grid_isopen();
+    windowState.grid_isopen ? listOrGiid.value = '列表视图' : listOrGiid.value = '宫格视图';
+}
 
 
 </script>
@@ -48,7 +54,6 @@ windowState.$subscribe((mutate, state) => {
     margin: 10px auto;
     text-align: center;
     line-height: 50px;
-
     border-bottom: 1px solid #acb2ac73;
 }
 

@@ -1,8 +1,8 @@
 <template>
     <ul class="sort" ref="sort">
-        <li>全部笔记</li>
-        <li>未分类</li>
-        <li>最近删除</li>
+        <li @click="showList">全部笔记</li>
+        <li >未分类(添加分类)</li>
+        <li @click="showList">最近删除</li>
     </ul>
 </template>
 
@@ -10,6 +10,7 @@
 import { ref } from 'vue'
 import { useWinStore } from '@/stores/windowState'
 const sort = ref();
+const props = defineProps(['sendTit'])
 
 
 defineExpose({ sort }) // 将实例交给父组件
@@ -24,6 +25,12 @@ windowState.$subscribe((mutate, state) => {
         sort.value.style.boxShadow = '';
     }
 })
+
+/* 显示对应分类 */
+const showList = (e:Event) => {
+    props.sendTit((e.target as any).innerText); 
+}
+
 
 </script>
 

@@ -5,7 +5,7 @@
         </template>
     </Title>
     <div class="hidden">
-        <div class="list">
+        <div :class="windowState.grid_isopen ? 'list gridList' : 'list'">
             <TodoCard v-for="item in todoStore.todos" :key="item.id" :id="item.id" :title="item.title"
                 :isComplete="item.isComplete" @click.self="editTodoWin(item.id)">
             </TodoCard>
@@ -25,19 +25,22 @@ import Add from '@/components/AddButton.vue'
 import TodoWin from '@/components/TodoWin.vue'
 import EditTodo from '@/components/EditTodo.vue'
 import { useTodoStore } from '@/stores/todoStore'
+import { useWinStore } from '@/stores/windowState'
 import { ref, computed } from 'vue'
 
-/* 声明卡片编辑窗口是否弹出 */
+/* 创建 windowState实例 */
+const windowState = useWinStore();
+/* 声明 卡片编辑窗口是否弹出 */
 let editTodoIsopen = ref(false);
 
-/* 声明一个id，用来存储点击卡片的id */
+/* 声明 id，用来存储点击卡片的id */
 let Id = ref(0);
 
-/* todo新增弹框是否弹出 */
+/* 声明 todo新增弹框是否弹出 */
 let todoWinIsopen = ref(false);
-/* 声明一个 todoStore实例 */
+/* 声明 一个 todoStore实例 */
 const todoStore = useTodoStore();
-/* 计算未完成的代办 */
+/* 方法 计算未完成的代办 */
 let len = computed(() => {
     let count = 0;
     todoStore.todos.forEach(item => {
@@ -45,7 +48,7 @@ let len = computed(() => {
     })
     return count;
 })
-
+/* 声明 当前分类 */
 let tit = '全部代办';
 
 
@@ -87,13 +90,13 @@ const offEditTodoWin = () => {
     position: absolute;
     top: 160px;
     width: calc(100% - 20px);
-    height: 330px;
+    height: calc(100vh - 250px);
     overflow: hidden;
 }
 
 .hidden .list {
     width: 100vw;
-    height: 350px;
+    height: calc(100vh - 230px);
     overflow: scroll;
 }
 
@@ -103,5 +106,12 @@ const offEditTodoWin = () => {
     text-align: center;
     position: absolute;
     top: calc(50vh - 25px);
+}
+
+/* 宫格视图 */
+.gridList {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
 }
 </style>

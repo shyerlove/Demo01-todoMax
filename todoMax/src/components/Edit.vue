@@ -31,16 +31,14 @@ const titleRef = ref();
 let noteObj: Note;
 /* 初始化对应的内容 */
 onMounted(() => {
-    noteObj = notesStore.getNote(props.id) as Note;
+    noteObj = notesStore.getNote([props.id])[0] as Note;
     h1Ref.value.value = noteObj.h1;
     titleRef.value.value = noteObj.title;
-    console.log(noteObj);
-
 })
 
 /* 删除笔记内容 */
 const del = () => {
-    notesStore.delNote(props.id);
+    notesStore.delNote([props.id]);
     alert('删除成功！');
     props.offEditWin();// 关闭编辑框
 }
@@ -77,17 +75,34 @@ const save = () => {
     filter: blur(100px);
 }
 
-.win .note-win {
-    position: absolute;
-    display: block;
-    width: 80%;
-    height: 80%;
-    left: 10vw;
-    top: 10vh;
-    background-color: #202224;
-    border-radius: 10px;
-    box-shadow: 3px 3px 3px 3px #20222470;
-    padding: 10px 10px;
+@media(width<=500px) {
+    .note-win {
+        position: absolute;
+        display: block;
+        width: 80%;
+        height: 30%;
+        left: 10vw;
+        top: 30vh;
+        background-color: #202224;
+        border-radius: 10px;
+        box-shadow: 3px 3px 3px 3px #20222470;
+        padding: 10px 10px;
+    }
+}
+
+@media(width>500px) {
+    .note-win {
+        position: absolute;
+        display: block;
+        width: 80%;
+        height: 80%;
+        left: 10vw;
+        top: 10vh;
+        background-color: #202224;
+        border-radius: 10px;
+        box-shadow: 3px 3px 3px 3px #20222470;
+        padding: 10px 10px;
+    }
 }
 
 .note-win .h1 {
@@ -97,12 +112,13 @@ const save = () => {
     background-color: transparent;
     color: whitesmoke;
     border: none;
+    margin-bottom: 20px;
 }
 
 .note-win .title {
     display: block;
     width: 100%;
-    height: 80%;
+    height: 60%;
     resize: none;
     font-size: 20px;
     background-color: transparent;
@@ -113,17 +129,19 @@ const save = () => {
 
 .note-win .btns {
     width: 100%;
-    height: 10%;
+    height: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: end;
 }
 
 .note-win .btns button {
-    float: right;
     width: 70px;
     height: 30px;
     border-radius: 5px;
     border: none;
-    margin-right: 10px;
     transition: all 0.2s;
+    margin-right: 10px;
 }
 
 .note-win .btns button:hover {
