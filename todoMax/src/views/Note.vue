@@ -38,7 +38,7 @@ import Add from '@/components/AddButton.vue'
 import Sort from '@/components/Sort.vue'
 import NoteWin from '@/components/NoteWin.vue'
 import Edit from '@/components/Edit.vue'
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive } from 'vue'
 import { useNoteStore } from '@/stores/notesStore'
 import { useWinStore } from '@/stores/windowState'
 

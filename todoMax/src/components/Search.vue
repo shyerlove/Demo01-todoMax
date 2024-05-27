@@ -12,17 +12,14 @@ let props = defineProps(['updata']);
 let updata = props.updata;
 const notesStore = useNoteStore();
 
-const search = (e: Event) => {
+const search = (e:KeyboardEvent) => {
 
-    // console.log((<any>e.currentTarget).value);
-    let msg = (<any>e.currentTarget).value;
+    let msg = (e.currentTarget as any).value;
     let noteArr = notesStore.notes; // 定义暂存区
     noteArr = noteArr.filter(item => {
         let len = msg.length;
         let str = item.h1.slice(0, len);
         if (str == msg && msg != '') {
-
-            // console.log(item.h1);
             return item;
         }
     })

@@ -55,6 +55,7 @@ const showList = (e:Event) => {
     line-height: 50px;
     margin: 10px auto;
     border-bottom: 1px solid #acb2ac73;
+    transition: all 0.2s;
 }
 
 .sort li:hover {
